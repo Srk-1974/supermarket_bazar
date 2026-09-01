@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supermarket Bazaar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div class="brand-wrap">
+          <img class="shop-icon" src="{{ url_for('static', filename='shop-icon.svg') }}" alt="Supermarket icon" />
+          <div>
+            <h1>SUPERMARKET_BAZAAR</h1>
+            <p>Store dashboard for products and sales</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Products</h2>
+          <button id="loadProductsBtn">Load products</button>
+        </div>
+        <div id="productsStatus" class="status">Ready</div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>SKU</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr>
+              <td colspan="5" class="empty">No products loaded yet</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Database Configuration</h2>
+          <button id="testConnectionBtn" type="button">Test connection</button>
+        </div>
+
+        <form id="dbConfigForm">
+          <div class="form-grid">
+            <label>
+              Database type
+              <select id="db_type">
+                <option value="postgresql" {% if db_config.type == 'postgresql' %}selected{% endif %}>PostgreSQL</option>
+                <option value="mysql" {% if db_config.type == 'mysql' %}selected{% endif %}>MySQL</option>
+                <option value="sqlserver" {% if db_config.type == 'sqlserver' %}selected{% endif %}>SQL Server</option>
+                <option value="mongodb" {% if db_config.type == 'mongodb' %}selected{% endif %}>MongoDB</option>
+              </select>
+            </label>
+            <label>
+              Host
+              <input type="text" id="db_host" value="{{ db_config.host }}" required />
+            </label>
+            <label>
+              Port
+              <input type="text" id="db_port" value="{{ db_config.port }}" required />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Database
+              <input type="text" id="db_name" value="{{ db_config.db }}" required />
+            </label>
+            <label>
+              User
+              <input type="text" id="db_user" value="{{ db_config.user }}" required />
+            </label>
+            <label>
+              Password
+              <input type="password" id="db_password" value="{{ db_config.password }}" />
+            </label>
+          </div>
+
+          <div class="config-actions">
+            <button type="submit">Save Database</button>
+          </div>
+        </form>
+        <div id="dbStatus" class="status">Ready to connect</div>
+      </section>
+
+      <section class="panel">
+        <h2>Create Sale</h2>
+        <form id="saleForm">
+          <div class="form-grid">
+            <label>
+              Location ID
+              <input type="number" id="location_id" value="1" required />
+            </label>
+            <label>
+              Cashier ID
+              <input type="number" id="cashier_id" value="1" required />
+            </label>
+            <label>
+              Customer ID
+              <input type="number" id="customer_id" value="1" />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Product ID
+              <input type="number" id="product_id" value="1" required />
+            </label>
+            <label>
+              Quantity
+              <input type="number" id="quantity" value="1" min="1" required />
+            </label>
+          </div>
+
+          <button type="submit">Create Sale</button>
+        </form>
+        <div id="saleStatus" class="status">Waiting for sale</div>
+      </section>
+    </div>
+
+    <script>
+      const productsTableBody = document.getElementById('productsTableBody');
+      const productsStatus = document.getElementById('productsStatus');
+      const saleStatus = document.getElementById('saleStatus');
+
+      document.getElementById('loadProductsBtn').addEventListener('click', loadProducts);
+
+      const dbStatus = document.getElementById('dbStatus');
+
+      document.getElementById('dbConfigForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const payload = {
+          type: document.getElementById('db_type').value,
+          host: document.getElementById('db_host').value,
+          port: document.getElementById('db_port').value,
+          db: document.getElementById('db_name').value,
+          user: document.getElementById('db_user').value,
+          password: document.getElementById('db_password').value
+        };
+
+        dbStatus.textContent = 'Saving database settings...';
+        dbStatus.className = 'status';
+
+        try {
+          const response = await fetch('/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || 'Database configuration failed');
+          }
+
+          dbStatus.textContent = 'Database configuration saved successfully.';
+          dbStatus.classList.add('success');
+        } catch (error) {
+          dbStatus.textContent = error.message;
+          dbStatus.classList.add('error');
+        }
+      });
+
+      document.getElementById('testConnectionBtn').addEventListener('click', async () => {
+        dbStatus.textContent = 'Testing database connection...';
+        dbStatus.className = 'status';
+
+        try {
+          const payload = {
+            type: document.getElementById('db_type').value,
+            host: document.getElementById('db_host').value,
+            port: document.getElementById('db_port').value,
+            db: document.getElementById('db_name').value,
+            user: document.getElementById('db_user').value,
+            password: document.getElementById('db_password').value
+          };
+
+          const response = await fetch('/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || 'Test connection failed');
+          }
+
+          dbStatus.textContent = 'Connection details saved. Use the app and test the DB by loading products.';
+          dbStatus.classList.add('success');
+        } catch (error) {
+          dbStatus.textContent = error.message;
+          dbStatus.classList.add('error');
+        }
+      });
+
+      document.getElementById('saleForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const payload = {
+          location_id: Number(document.getElementById('location_id').value),
+          cashier_id: Number(document.getElementById('cashier_id').value),
+          customer_id: Number(document.getElementById('customer_id').value || 0),
+          lines: [{
+            product_id: Number(document.getElementById('product_id').value),
+            quantity: Number(document.getElementById('quantity').value)
+          }]
+        };
+
+        saleStatus.textContent = 'Creating sale...';
+        saleStatus.className = 'status';
+
+        try {
+          const response = await fetch('/sales', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || 'Sale creation failed');
+          }
+
+          saleStatus.textContent = `Sale created successfully. Sale ID: ${data.sale_id}, subtotal: ${data.subtotal}`;
+          saleStatus.classList.add('success');
+        } catch (error) {
+          saleStatus.textContent = error.message;
+          saleStatus.classList.add('error');
+        }
+      });
+
+      async function loadProducts() {
+        productsStatus.textContent = 'Loading products...';
+        productsStatus.className = 'status';
+
+        try {
+          const response = await fetch('/products');
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Unable to load products');
+          }
+
+          if (!data.length) {
+            productsTableBody.innerHTML = '<tr><td colspan="5" class="empty">No products found</td></tr>';
+            productsStatus.textContent = 'No products available';
+            return;
+          }
+
+          productsTableBody.innerHTML = data.map(product => `
+            <tr>
+              <td>${product.product_id}</td>
+              <td>${product.sku}</td>
+              <td>${product.name}</td>
+              <td>$${Number(product.retail_price).toFixed(2)}</td>
+              <td>${product.is_active ? 'Active' : 'Inactive'}</td>
+            </tr>
+          `).join('');
+
+          productsStatus.textContent = `${data.length} products loaded`;
+          productsStatus.classList.add('success');
+        } catch (error) {
+          productsStatus.textContent = error.message;
+          productsStatus.classList.add('error');
+        }
+      }
+    </script>
+  </body>
+</html>

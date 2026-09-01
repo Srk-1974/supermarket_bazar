@@ -1,0 +1,26 @@
+<svg width="180" height="150" viewBox="0 0 180 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="15" y="18" width="150" height="90" rx="10" fill="#F4BA3E"/>
+  <rect x="20" y="18" width="140" height="14" rx="6" fill="#F8D67A"/>
+  <rect x="20" y="108" width="140" height="16" rx="8" fill="#E6702A"/>
+  <g opacity="0.9">
+    <rect x="34" y="45" width="38" height="42" rx="6" fill="#F7F3EA"/>
+    <rect x="108" y="45" width="38" height="42" rx="6" fill="#F7F3EA"/>
+    <path d="M36 44L51 32L66 44" stroke="#E6A62A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M110 44L125 32L140 44" stroke="#E6A62A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g>
+    <path d="M40 36H140" stroke="#E9A52B" stroke-width="6" stroke-linecap="round"/>
+    <path d="M25 108H155" stroke="#FFDFA4" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g>
+    <rect x="56" y="98" width="68" height="12" rx="6" fill="#F6E2A3"/>
+    <path d="M42 118H138" stroke="#D75D2E" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="54" cy="57" r="7" fill="#22C55E"/>
+    <circle cx="70" cy="63" r="7" fill="#22C55E"/>
+    <circle cx="126" cy="56" r="7" fill="#22C55E"/>
+    <circle cx="142" cy="62" r="7" fill="#22C55E"/>
+  </g>
+  <text x="90" y="80" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="900" fill="#A86500">SHOP</text>
+</svg>
