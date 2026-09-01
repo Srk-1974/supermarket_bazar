@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import psycopg2
 import streamlit as st
+import streamlit.components.v1 as components
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +21,7 @@ def get_setting(name, default=None):
 
 st.set_page_config(page_title="Supermarket Bazaar", page_icon="🛒", layout="wide")
 
-st.markdown(
+components.html(
     """
     <style>
         html, body, [data-testid="stAppViewContainer"] {
@@ -125,11 +126,7 @@ st.markdown(
             border-radius: 10px;
         }
     </style>
-    """
-)
 
-st.markdown(
-    """
     <div class="brand-card">
       <div class="brand-box">
         <div class="icon-box"><span>🛒</span></div>
@@ -140,7 +137,7 @@ st.markdown(
       </div>
     </div>
     """,
-    unsafe_allow_html=True,
+    height=180,
 )
 
 with st.sidebar:
