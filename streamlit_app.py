@@ -25,8 +25,8 @@ components.html(
     """
     <style>
         html, body, [data-testid="stAppViewContainer"] {
-            background: linear-gradient(135deg, #091c2b 0%, #0f2942 35%, #1c5d90 100%);
-            color: #edf6ff;
+            background: linear-gradient(135deg, #f5efe8 0%, #f0e5d8 25%, #e9d7bf 50%, #f7f4ee 100%);
+            color: #1f2d3d;
         }
         .main .block-container {
             padding-top: 2.2rem;
@@ -34,12 +34,12 @@ components.html(
             max-width: 1200px;
         }
         .brand-card {
-            background: rgba(12, 29, 45, 0.7);
-            border: 1px solid rgba(255,255,255,0.16);
-            border-radius: 24px;
+            background: linear-gradient(135deg, #0b223c 0%, #102d4f 35%, #183f60 100%);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 26px;
             padding: 1.5rem 1.8rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            box-shadow: 0 12px 30px rgba(17, 35, 55, 0.2);
         }
         .brand-box {
             display: flex;
@@ -52,10 +52,10 @@ components.html(
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(180deg, #f9d96f 0%, #f4b019 100%);
-            border-radius: 18px;
-            box-shadow: 0 0 28px rgba(246, 193, 70, 0.8);
-            border: 2px solid rgba(255,255,255,0.65);
+            background: linear-gradient(180deg, #f7d677 0%, #f1b81e 100%);
+            border-radius: 20px;
+            box-shadow: 0 0 35px rgba(244, 189, 46, 0.9);
+            border: 2px solid rgba(255,255,255,0.75);
         }
         .icon-box span {
             font-size: 58px;
@@ -74,16 +74,16 @@ components.html(
             margin-top: 0.35rem;
         }
         .panel {
-            background: rgba(11, 29, 46, 0.82);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(20, 35, 51, 0.08);
             border-radius: 24px;
             padding: 1.2rem 1.3rem 1.1rem 1.3rem;
             margin-bottom: 1.4rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 24px rgba(72, 55, 28, 0.08);
         }
         .panel h2 {
             margin: 0 !important;
-            color: white !important;
+            color: #1d2b39 !important;
             font-size: 2rem !important;
             font-weight: 800 !important;
         }
@@ -106,7 +106,7 @@ components.html(
             background: #1f72f1;
         }
         .status-text {
-            color: rgba(255,255,255,0.8);
+            color: rgba(29, 43, 57, 0.82);
             font-size: 1.05rem;
             margin: 0.3rem 0 0.9rem 0;
         }
@@ -116,13 +116,13 @@ components.html(
             overflow: hidden;
         }
         .db-form .stSelectbox label, .db-form .stTextInput label {
-            color: white !important;
+            color: #1d2b39 !important;
             font-weight: 600;
         }
         .db-form .stTextInput input, .db-form .stSelectbox select {
-            background: rgba(255,255,255,0.04);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.65);
+            color: #1d2b39;
+            border: 1px solid rgba(25, 38, 53, 0.15);
             border-radius: 10px;
         }
     </style>
