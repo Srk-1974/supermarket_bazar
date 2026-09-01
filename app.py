@@ -316,6 +316,9 @@ def create_sale():
         return jsonify({'error': str(e), 'hint': 'The selected database must be a valid PostgreSQL/MySQL instance with the schema from db/schema_postgres.sql.'}), 503
 
 if __name__ == '__main__':
+    if os.getenv('RUN_FLASK', '0').lower() not in {'1', 'true', 'yes', 'on'}:
+        print('Flask app startup skipped. Set RUN_FLASK=1 only when you want to run the API locally.')
+        raise SystemExit(0)
     host = os.getenv('APP_HOST', '0.0.0.0')
     port = int(os.getenv('APP_PORT', '8000'))
     active_url = app.config.get('POSTGRES_URL') or get_db_config()['url']
